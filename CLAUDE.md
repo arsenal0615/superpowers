@@ -79,7 +79,7 @@ python3 tests/claude-code/analyze-token-usage.py ~/.claude/projects/<path>/<sess
 - `.gitattributes` enforces LF line endings for all scripts, markdown, and JSON
 
 ### Plugin Installation
-- **Claude Code:** `/plugin marketplace add obra/superpowers-marketplace` then `/plugin install superpowers@superpowers-marketplace`
+- **Claude Code:** `/plugin marketplace add arsenal0615/superpowers-marketplace` then `/plugin install superpowers@qx-superpowers-marketplace`
 - **Cursor:** `/plugin-add superpowers`
 - **Codex/OpenCode:** Manual clone + symlink (see platform-specific docs in `docs/`)
 

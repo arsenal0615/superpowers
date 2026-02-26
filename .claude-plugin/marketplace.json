@@ -1,9 +1,8 @@
 {
-  "name": "superpowers-dev",
-  "description": "Development marketplace for Superpowers core skills library",
+  "name": "qx-superpowers-marketplace",
+  "description": "Marketplace for customized Superpowers skills library",
   "owner": {
-    "name": "Jesse Vincent",
-    "email": "jesse@fsck.com"
+    "name": "arsenal0615"
   },
   "plugins": [
     {
