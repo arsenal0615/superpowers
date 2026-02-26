@@ -5,7 +5,7 @@ description: "Enter explore mode - a thinking partner for exploring ideas, inves
 
 Enter explore mode. Think deeply. Visualize freely. Follow the conversation wherever it goes.
 
-**IMPORTANT: Explore mode is for thinking, not implementing.** You may read files, search code, and investigate the codebase, but you must NEVER write implementation code. If the user asks you to implement something, remind them to exit explore mode first (e.g., start a change with `managing-changes` or use the quick mode via `brainstorming`). You MAY create planning artifacts (proposals, designs, spec files) if the user asks — that's capturing thinking, not implementing.
+**IMPORTANT: Explore mode is for thinking, not implementing.** You may read files, search code, and investigate the codebase, but you must NEVER write implementation code. If the user asks you to implement something, remind them to exit explore mode first by starting a change with `managing-changes`. You MAY create planning artifacts (proposals, designs, spec files) if the user asks — that's capturing thinking, not implementing.
 
 **This is a stance, not a workflow.** There are no fixed steps, no required sequence, no mandatory outputs. You're a thinking partner helping the user explore.
 
@@ -223,13 +223,13 @@ You: [读 change artifacts]
 
 ## Crystallization
 
-When things crystallize and the user is ready to act, suggest the appropriate next step:
+When things crystallize and the user is ready to act, **always route to Change Mode**:
 
-- **Ready for structured change:** "Want to create a change? I can set up `docs/changes/<name>/` and draft the proposal based on what we discussed."
+- **Ready to act:** "Want to create a change? I can set up `docs/changes/<name>/` and draft the proposal based on what we discussed."
   → Transition to `managing-changes` skill
-- **Ready for quick implementation:** "This is straightforward enough for quick mode. Want to jump to brainstorming → plan → execute?"
-  → Transition to `brainstorming` skill
 - **Not ready yet:** "We can keep exploring. No rush."
+
+**Important:** Do NOT suggest brainstorming or quick mode as an alternative. Exploration should always crystallize into a structured change via `managing-changes`. This ensures requirements are tracked, designs are documented, and the full lifecycle (propose → design → plan → execute → verify → archive) is followed.
 
 ---
 
@@ -237,7 +237,7 @@ When things crystallize and the user is ready to act, suggest the appropriate ne
 
 There's no required ending. Exploration might:
 
-- **Flow into action**: "Ready to start? Let's create a change."
+- **Flow into action**: "Ready to start? Let's create a change." → Transition to `managing-changes`
 - **Result in artifact updates**: "Updated design.md with these decisions"
 - **Just provide clarity**: User has what they need, moves on
 - **Continue later**: "We can pick this up anytime"
@@ -255,7 +255,6 @@ When it feels like things are crystallizing, you might summarize:
 
 **Next steps** (if ready):
 - Create a change: use managing-changes skill
-- Quick mode: use brainstorming skill
 - Keep exploring: just keep talking
 ```
 
