@@ -27,6 +27,10 @@ This is not negotiable. This is not optional. You cannot rationalize your way ou
 digraph skill_flow {
     "User message received" [shape=doublecircle];
     "About to EnterPlanMode?" [shape=doublecircle];
+    "Wants to think/explore?" [shape=diamond];
+    "Invoke exploring skill" [shape=box];
+    "Wants structured change?" [shape=diamond];
+    "Invoke managing-changes skill" [shape=box];
     "Already brainstormed?" [shape=diamond];
     "Invoke brainstorming skill" [shape=box];
     "Might any skill apply?" [shape=diamond];
@@ -37,12 +41,19 @@ digraph skill_flow {
     "Follow skill exactly" [shape=box];
     "Respond (including clarifications)" [shape=doublecircle];
 
+    "User message received" -> "Wants to think/explore?";
+    "Wants to think/explore?" -> "Invoke exploring skill" [label="yes"];
+    "Wants to think/explore?" -> "Wants structured change?" [label="no"];
+    "Wants structured change?" -> "Invoke managing-changes skill" [label="yes"];
+    "Wants structured change?" -> "Might any skill apply?" [label="no"];
+    "Invoke exploring skill" -> "Follow skill exactly";
+    "Invoke managing-changes skill" -> "Follow skill exactly";
+
     "About to EnterPlanMode?" -> "Already brainstormed?";
     "Already brainstormed?" -> "Invoke brainstorming skill" [label="no"];
     "Already brainstormed?" -> "Might any skill apply?" [label="yes"];
     "Invoke brainstorming skill" -> "Might any skill apply?";
 
-    "User message received" -> "Might any skill apply?";
     "Might any skill apply?" -> "Invoke Skill tool" [label="yes, even 1%"];
     "Might any skill apply?" -> "Respond (including clarifications)" [label="definitely not"];
     "Invoke Skill tool" -> "Announce: 'Using [skill] to [purpose]'";
@@ -76,11 +87,27 @@ These thoughts mean STOP—you're rationalizing:
 
 When multiple skills could apply, use this order:
 
-1. **Process skills first** (brainstorming, debugging) - these determine HOW to approach the task
-2. **Implementation skills second** (frontend-design, mcp-builder) - these guide execution
+1. **Thinking skills first** (exploring, brainstorming, debugging) — these determine HOW to approach the task
+2. **Lifecycle skills second** (managing-changes) — these provide structure for multi-artifact work
+3. **Implementation skills third** (frontend-design, mcp-builder) — these guide execution
 
-"Let's build X" → brainstorming first, then implementation skills.
-"Fix this bug" → debugging first, then domain-specific skills.
+### Mode Selection Guide
+
+When the user wants to build or change something, choose the right entry point:
+
+| User Intent | Skill | Why |
+|-------------|-------|-----|
+| "Let's think about X" / "explore" / "investigate" | **exploring** | Free-form thinking, no commitment |
+| "Let's build X" (simple, quick) | **brainstorming** | Quick mode: design → plan → execute |
+| "Let's build X" (complex, needs tracking) | **managing-changes** | Change mode: propose → design → plan → execute → archive |
+| "Create a change" / "new feature" / "write proposal" | **managing-changes** | Explicit lifecycle request |
+| "What changes do we have?" / "status" / "archive" | **managing-changes** | Lifecycle operations |
+| "Fix this bug" | **debugging** | Systematic root cause analysis |
+
+**Key distinction:**
+- **exploring** = thinking without commitment (may not produce artifacts)
+- **brainstorming** = designing with commitment (always produces design doc + plan)
+- **managing-changes** = structured lifecycle (produces change directory with proposal, specs, design, plan)
 
 ## Skill Types
 

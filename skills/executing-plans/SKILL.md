@@ -13,22 +13,39 @@ Load plan, review critically, execute tasks in batches, report for review betwee
 
 **Announce at start:** "I'm using the executing-plans skill to implement this plan."
 
+## Plan Location Detection
+
+Before loading the plan, determine the mode:
+
+1. **Change Mode:** Plan is at `docs/changes/<name>/plan.md`
+   - Detected when: user mentions a change name, or plan path is inside `docs/changes/`
+   - Checkbox tracking: enabled (update `- [ ]` → `- [x]` in file after each task)
+   - Progress persists across sessions
+
+2. **Quick Mode:** Plan is at `docs/plans/*.md`
+   - Detected when: plan path is inside `docs/plans/` or no change context
+   - Checkbox tracking: not applicable (use TodoWrite as before)
+
 ## The Process
 
 ### Step 1: Load and Review Plan
 1. Read plan file
-2. Review critically - identify any questions or concerns about the plan
-3. If concerns: Raise them with your human partner before starting
-4. If no concerns: Create TodoWrite and proceed
+2. **If Change Mode:** Check for existing progress — count `- [x]` vs `- [ ]` checkboxes
+   - If progress exists: display summary ("N/M tasks complete, resuming from task K") and skip completed tasks
+   - If no progress: start from the beginning
+3. Review critically — identify any questions or concerns about the plan
+4. If concerns: Raise them with your human partner before starting
+5. If no concerns: Create TodoWrite for remaining tasks and proceed
 
 ### Step 2: Execute Batch
-**Default: First 3 tasks**
+**Default: First 3 tasks** (skip already-completed tasks in Change Mode)
 
 For each task:
-1. Mark as in_progress
+1. Mark as in_progress (TodoWrite)
 2. Follow each step exactly (plan has bite-sized steps)
 3. Run verifications as specified
-4. Mark as completed
+4. Mark as completed (TodoWrite)
+5. **If Change Mode:** Update the plan file — find the corresponding `- [ ]` line and replace with `- [x]`, write file immediately
 
 ### Step 3: Report
 When batch complete:

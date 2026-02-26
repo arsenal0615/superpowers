@@ -93,6 +93,21 @@ Start a new session in your chosen platform and ask for something that should tr
 
 **The agent checks for relevant skills before any task.** Mandatory workflows, not suggestions.
 
+### Change Mode (Structured Lifecycle)
+
+For larger features, cross-role handoffs (designer → engineer), or work that needs requirement tracking:
+
+1. **exploring** - Free-form thinking partner. No mandatory outputs, no fixed steps. Investigate the codebase, compare options, visualize with ASCII diagrams. Exit anytime or crystallize into a change.
+
+2. **managing-changes** - Create a change at `docs/changes/<name>/` with lifecycle: propose → specs (optional) → design → plan → execute → verify → archive. Specs accumulate in `docs/specs/` as a living requirements base.
+
+3. **writing-plans** / **executing-plans** - Same execution skills as quick mode, but output to the change directory with persistent checkbox tracking across sessions.
+
+**Directory conventions:**
+- `docs/changes/` - Active changes with proposal, design, specs, and plan
+- `docs/changes/archive/` - Completed changes archived with date prefix
+- `docs/specs/` - Project-level requirement specs, updated when changes are archived
+
 ## What's Inside
 
 ### Skills Library
@@ -105,9 +120,11 @@ Start a new session in your chosen platform and ask for something that should tr
 - **verification-before-completion** - Ensure it's actually fixed
 
 **Collaboration** 
-- **brainstorming** - Socratic design refinement
-- **writing-plans** - Detailed implementation plans
-- **executing-plans** - Batch execution with checkpoints
+- **exploring** - Free-form thinking partner for ideas, problems, and technical investigation
+- **managing-changes** - Change lifecycle management (propose, spec, design, verify, archive)
+- **brainstorming** - Socratic design refinement (quick mode)
+- **writing-plans** - Detailed implementation plans (supports change mode with persistent checkboxes)
+- **executing-plans** - Batch execution with checkpoints (supports cross-session progress recovery)
 - **dispatching-parallel-agents** - Concurrent subagent workflows
 - **requesting-code-review** - Pre-review checklist
 - **receiving-code-review** - Responding to feedback

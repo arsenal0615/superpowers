@@ -15,7 +15,21 @@ Assume they are a skilled developer, but know almost nothing about our toolset o
 
 **Context:** This should be run in a dedicated worktree (created by brainstorming skill).
 
-**Save plans to:** `docs/plans/YYYY-MM-DD-<feature-name>.md`
+## Change Context Detection
+
+Before writing the plan, detect whether you're working within a change:
+
+1. **Check conversation context** — Has the user mentioned a change name? Have you been working on a change in `docs/changes/<name>/`?
+2. **Check for explicit path** — Did the user reference a file inside `docs/changes/`?
+
+**If change context detected (Change Mode):**
+- Read `docs/changes/<name>/proposal.md`, `design.md`, and `specs/` as input context
+- Save plan to: `docs/changes/<name>/plan.md`
+- Use checkbox format for tasks (see Change Mode Task Structure below)
+
+**If no change context (Quick Mode):**
+- Save plans to: `docs/plans/YYYY-MM-DD-<feature-name>.md`
+- Use original task format (see Task Structure below)
 
 ## Bite-Sized Task Granularity
 
@@ -87,6 +101,41 @@ git commit -m "feat: add specific feature"
 ```
 ````
 
+## Change Mode Task Structure
+
+When writing a plan for a change (`docs/changes/<name>/plan.md`), use checkbox format for persistent tracking:
+
+````markdown
+## 1. [Group Name]
+
+- [ ] 1.1 [Task description]
+
+**Files:**
+- Create: `exact/path/to/file.py`
+- Test: `tests/exact/path/to/test.py`
+
+**Steps:**
+1. Write failing test
+2. Run to verify failure
+3. Implement minimal code
+4. Run to verify pass
+5. Commit
+
+- [ ] 1.2 [Next task description]
+...
+
+## 2. [Next Group]
+
+- [ ] 2.1 [Task description]
+...
+````
+
+**Key differences from quick mode:**
+- Tasks use `- [ ]` checkbox format (updated to `- [x]` during execution)
+- Tasks are numbered as `N.M` (group.task)
+- Groups are numbered `## N. Group Name`
+- Progress persists across sessions via checkbox state
+
 ## Remember
 - Exact file paths always
 - Complete code in plan (not "add validation")
@@ -97,6 +146,18 @@ git commit -m "feat: add specific feature"
 ## Execution Handoff
 
 After saving the plan, offer execution choice:
+
+**Change Mode:**
+
+**"Plan complete and saved to `docs/changes/<name>/plan.md`. Two execution options:**
+
+**1. Subagent-Driven (this session)** - I dispatch fresh subagent per task, review between tasks, fast iteration
+
+**2. Parallel Session (separate)** - Open new session with executing-plans, batch execution with checkpoints. Progress is tracked via checkboxes — you can resume anytime.
+
+**Which approach?"**
+
+**Quick Mode:**
 
 **"Plan complete and saved to `docs/plans/<filename>.md`. Two execution options:**
 
