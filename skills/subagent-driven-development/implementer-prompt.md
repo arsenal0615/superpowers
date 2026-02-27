@@ -8,9 +8,15 @@ Task tool (general-purpose):
   prompt: |
     You are implementing Task N: [task name]
 
-    ## Task Description
+    ## Task
 
-    [FULL TEXT of task from plan - paste it here, don't make subagent read file]
+    [Task description, files, key constraints, and completion criteria from plan — paste here, don't make subagent read file]
+
+    ## Design Decisions
+
+    [Relevant excerpts from design.md — only the decisions this task references.
+     Include the decision title, choice, and rationale. Omit alternatives unless
+     they contain important "do NOT do X" guidance.]
 
     ## Context
 
@@ -19,7 +25,7 @@ Task tool (general-purpose):
     ## Before You Begin
 
     If you have questions about:
-    - The requirements or acceptance criteria
+    - The completion criteria or key constraints
     - The approach or implementation strategy
     - Dependencies or assumptions
     - Anything unclear in the task description
@@ -29,12 +35,13 @@ Task tool (general-purpose):
     ## Your Job
 
     Once you're clear on requirements:
-    1. Implement exactly what the task specifies
-    2. Write tests (following TDD if task says to)
-    3. Verify implementation works
-    4. Commit your work
-    5. Self-review (see below)
-    6. Report back
+    1. Achieve all completion criteria, using key constraints as guardrails
+    2. Use design decisions for implementation approach — don't reinvent what's already decided
+    3. Write tests (TDD: failing test first, then minimal implementation)
+    4. Run the verification command specified in the task
+    5. Commit with the message specified in the task
+    6. Self-review (see below)
+    7. Report back
 
     Work from: [directory]
 
@@ -46,9 +53,9 @@ Task tool (general-purpose):
     Review your work with fresh eyes. Ask yourself:
 
     **Completeness:**
-    - Did I fully implement everything in the spec?
-    - Did I miss any requirements?
-    - Are there edge cases I didn't handle?
+    - Did I satisfy ALL completion criteria? (Check each one)
+    - Did I respect ALL key constraints?
+    - Are there edge cases implied by the constraints that I didn't handle?
 
     **Quality:**
     - Is this my best work?

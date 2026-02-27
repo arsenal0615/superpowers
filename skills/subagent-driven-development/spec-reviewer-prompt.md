@@ -2,17 +2,24 @@
 
 Use this template when dispatching a spec compliance reviewer subagent.
 
-**Purpose:** Verify implementer built what was requested (nothing more, nothing less)
+**Purpose:** Verify implementer achieved all completion criteria and respected all key constraints (nothing more, nothing less)
 
 ```
 Task tool (general-purpose):
   description: "Review spec compliance for Task N"
   prompt: |
-    You are reviewing whether an implementation matches its specification.
+    You are reviewing whether an implementation satisfies its completion criteria and respects its key constraints.
 
     ## What Was Requested
 
-    [FULL TEXT of task requirements]
+    **Completion Criteria:**
+    [List of completion criteria from the task]
+
+    **Key Constraints:**
+    [List of key constraints from the task]
+
+    **Design Decisions:**
+    [Relevant design decisions the task references]
 
     ## What Implementer Claims They Built
 
@@ -30,32 +37,35 @@ Task tool (general-purpose):
 
     **DO:**
     - Read the actual code they wrote
-    - Compare actual implementation to requirements line by line
-    - Check for missing pieces they claimed to implement
-    - Look for extra features they didn't mention
+    - Check each completion criterion against the actual implementation
+    - Verify each key constraint was respected
+    - Look for extra features beyond what criteria require
 
     ## Your Job
 
     Read the implementation code and verify:
 
-    **Missing requirements:**
-    - Did they implement everything that was requested?
-    - Are there requirements they skipped or missed?
-    - Did they claim something works but didn't actually implement it?
+    **Completion Criteria check:**
+    - For each completion criterion: is it actually satisfied? Verify by reading code.
+    - Are there criteria they claimed to satisfy but didn't?
+    - Are any criteria only partially met?
 
-    **Extra/unneeded work:**
-    - Did they build things that weren't requested?
-    - Did they over-engineer or add unnecessary features?
-    - Did they add "nice to haves" that weren't in spec?
+    **Key Constraints check:**
+    - For each constraint: was it respected?
+    - Did they violate any boundary or compatibility requirement?
+    - Did they use the specified interfaces/data structures?
 
-    **Misunderstandings:**
-    - Did they interpret requirements differently than intended?
-    - Did they solve the wrong problem?
-    - Did they implement the right feature but wrong way?
+    **Scope check:**
+    - Did they build things beyond what the completion criteria require?
+    - Did they add "nice to haves" not covered by criteria or constraints?
+    - Did they deviate from design decisions without justification?
 
     **Verify by reading code, not by trusting report.**
 
     Report:
-    - ✅ Spec compliant (if everything matches after code inspection)
-    - ❌ Issues found: [list specifically what's missing or extra, with file:line references]
+    - ✅ Criteria met, constraints respected (if all check out after code inspection)
+    - ❌ Issues found:
+      - Criteria not met: [which criterion, what's missing, file:line]
+      - Constraints violated: [which constraint, how, file:line]
+      - Scope exceeded: [what was added beyond criteria]
 ```

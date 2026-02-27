@@ -7,9 +7,11 @@ description: Use when you have a spec or requirements for a multi-step task, bef
 
 ## Overview
 
-Write comprehensive implementation plans assuming the engineer has zero context for our codebase and questionable taste. Document everything they need to know: which files to touch for each task, code, testing, docs they might need to check, how to test it. Give them the whole plan as bite-sized tasks. DRY. YAGNI. TDD. Frequent commits.
+Write declarative implementation plans as work orders — each task specifies goals, file paths, key constraints (from design decisions), completion criteria, and verification commands. Do NOT include inline implementation code. The executing agent reads design.md and the codebase for implementation details and writes code from constraints. Give them the whole plan as bite-sized tasks. DRY. YAGNI. TDD. Frequent commits.
 
-Assume they are a skilled developer, but know almost nothing about our toolset or problem domain. Assume they don't know good test design very well.
+Assume the executing agent has zero context for the codebase. Each task may be executed by an independent sub-agent that knows nothing about other tasks. Make each task self-contained.
+
+**Language Rule:** Write the plan in the same language the user used in conversation. If the user writes in Chinese, the plan is in Chinese. If in English, the plan is in English. Field labels (Files, Key Constraints, Completion Criteria, Verify, Commit) remain in English for parseability.
 
 **Announce at start:** "I'm using the writing-plans skill to create the implementation plan."
 
@@ -33,12 +35,11 @@ Before writing the plan, detect whether you're working within a change:
 
 ## Bite-Sized Task Granularity
 
-**Each step is one action (2-5 minutes):**
-- "Write the failing test" - step
-- "Run it to make sure it fails" - step
-- "Implement the minimal code to make the test pass" - step
-- "Run the tests and make sure they pass" - step
-- "Commit" - step
+**Each task is one cohesive unit of work (2-5 minutes):**
+- One clear goal that produces a verifiable result
+- Small enough to commit atomically
+- Independent enough to execute with zero shared context from other tasks
+- TDD is still the expectation — but the plan states criteria, not steps
 
 ## Plan Document Header
 
@@ -63,43 +64,29 @@ Before writing the plan, detect whether you're working within a change:
 ````markdown
 ### Task N: [Component Name]
 
-**Files:**
-- Create: `exact/path/to/file.py`
-- Modify: `exact/path/to/existing.py:123-145`
-- Test: `tests/exact/path/to/test.py`
+**Files:** `exact/path/to/file.py`, `exact/path/to/existing.py:123-145`
 
-**Step 1: Write the failing test**
+**Key Constraints:**
+- [Design decision or architectural rule relevant to this task]
+- [Interface, data structure, or protocol to use/follow]
+- [Boundary condition, compatibility requirement, or invariant]
 
-```python
-def test_specific_behavior():
-    result = function(input)
-    assert result == expected
-```
+**Completion Criteria:**
+- [ ] [Measurable criterion 1 — what must be true when done]
+- [ ] [Measurable criterion 2]
 
-**Step 2: Run test to verify it fails**
-
-Run: `pytest tests/path/test.py::test_name -v`
-Expected: FAIL with "function not defined"
-
-**Step 3: Write minimal implementation**
-
-```python
-def function(input):
-    return expected
-```
-
-**Step 4: Run test to verify it passes**
-
-Run: `pytest tests/path/test.py::test_name -v`
-Expected: PASS
-
-**Step 5: Commit**
-
-```bash
-git add tests/path/test.py src/path/file.py
-git commit -m "feat: add specific feature"
-```
+**Verify:** `command to run` — expected: [brief expected outcome]
+**Commit:** `type(scope): message`
 ````
+
+**Key Constraints come from:**
+- `design.md` decisions (in Change Mode) — cite by decision name/number
+- Codebase patterns discovered during planning
+- API contracts, data formats, edge cases
+
+**Completion Criteria must be measurable:**
+- Good: "returns 400 for empty input", "second call returns in <10ms"
+- Bad: "add validation", "improve performance"
 
 ## Change Mode Task Structure
 
@@ -108,18 +95,21 @@ When writing a plan for a change (`docs/changes/<name>/plan.md`), use checkbox f
 ````markdown
 ## 1. [Group Name]
 
-- [ ] 1.1 [Task description]
+- [ ] 1.1 [Task description — one line]
 
-**Files:**
-- Create: `exact/path/to/file.py`
-- Test: `tests/exact/path/to/test.py`
+**Files:** `exact/path/to/file.py`, `exact/path/to/existing.py:123-145`
 
-**Steps:**
-1. Write failing test
-2. Run to verify failure
-3. Implement minimal code
-4. Run to verify pass
-5. Commit
+**Key Constraints:**
+- [Cite design.md decision, e.g., "per Decision 3: templates in style-guide"]
+- [Interface or data structure to follow]
+- [Compatibility or boundary requirement]
+
+**Completion Criteria:**
+- [ ] [Measurable criterion 1]
+- [ ] [Measurable criterion 2]
+
+**Verify:** `command` — expected: [outcome]
+**Commit:** `type(scope): message`
 
 - [ ] 1.2 [Next task description]
 ...
@@ -135,13 +125,18 @@ When writing a plan for a change (`docs/changes/<name>/plan.md`), use checkbox f
 - Tasks are numbered as `N.M` (group.task)
 - Groups are numbered `## N. Group Name`
 - Progress persists across sessions via checkbox state
+- Key Constraints cite design.md decisions by name
 
 ## Remember
-- Exact file paths always
-- Complete code in plan (not "add validation")
-- Exact commands with expected output
+- Exact file paths always (with line ranges when modifying existing files)
+- Complete constraints and criteria in plan (not "add validation" but "returns 400 for empty input")
+- NO inline implementation code — the executing agent writes code from design.md + constraints
+- Key Constraints extracted from design.md decisions (cite by decision name/number)
+- Verification commands with expected output
+- Each task self-contained — executable with zero shared context from other tasks
 - Reference relevant skills with @ syntax
 - DRY, YAGNI, TDD, frequent commits
+- Plan language follows user's input language
 
 ## Execution Handoff
 

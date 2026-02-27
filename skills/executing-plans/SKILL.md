@@ -42,10 +42,11 @@ Before loading the plan, determine the mode:
 
 For each task:
 1. Mark as in_progress (TodoWrite)
-2. Follow each step exactly (plan has bite-sized steps)
-3. Run verifications as specified
-4. Mark as completed (TodoWrite)
-5. **If Change Mode:** Update the plan file — find the corresponding `- [ ]` line and replace with `- [x]`, write file immediately
+2. Achieve each task's completion criteria, using key constraints as guardrails
+3. If in Change Mode, read `design.md` for implementation details referenced by task constraints
+4. Run verifications as specified
+5. Mark as completed (TodoWrite)
+6. **If Change Mode:** Update the plan file — find the corresponding `- [ ]` line and replace with `- [x]`, write file immediately
 
 ### Step 3: Report
 When batch complete:
@@ -86,7 +87,8 @@ After all tasks complete and verified:
 
 ## Remember
 - Review plan critically first
-- Follow plan steps exactly
+- Achieve completion criteria, using key constraints as guardrails
+- Read design.md for implementation details when tasks reference design decisions
 - Don't skip verifications
 - Reference skills when plan says to
 - Between batches: just report and wait

@@ -56,12 +56,12 @@ digraph process {
         "Mark task complete in TodoWrite" [shape=box];
     }
 
-    "Read plan, extract all tasks with full text, note context, create TodoWrite" [shape=box];
+    "Read plan + design.md, extract tasks with constraints/criteria, map design decisions to tasks, create TodoWrite" [shape=box];
     "More tasks remain?" [shape=diamond];
     "Dispatch final code reviewer subagent for entire implementation" [shape=box];
     "Use superpowers:finishing-a-development-branch" [shape=box style=filled fillcolor=lightgreen];
 
-    "Read plan, extract all tasks with full text, note context, create TodoWrite" -> "Dispatch implementer subagent (./implementer-prompt.md)";
+    "Read plan + design.md, extract tasks with constraints/criteria, map design decisions to tasks, create TodoWrite" -> "Dispatch implementer subagent (./implementer-prompt.md)";
     "Dispatch implementer subagent (./implementer-prompt.md)" -> "Implementer subagent asks questions?";
     "Implementer subagent asks questions?" -> "Answer questions, provide context" [label="yes"];
     "Answer questions, provide context" -> "Dispatch implementer subagent (./implementer-prompt.md)";
@@ -93,14 +93,15 @@ digraph process {
 ```
 You: I'm using Subagent-Driven Development to execute this plan.
 
-[Read plan file once: docs/plans/feature-plan.md]
-[Extract all 5 tasks with full text and context]
+[Read plan file: docs/plans/feature-plan.md]
+[Read design.md for implementation decisions]
+[Extract all 5 tasks with constraints, criteria, and relevant design decisions]
 [Create TodoWrite with all tasks]
 
 Task 1: Hook installation script
 
-[Get Task 1 text and context (already extracted)]
-[Dispatch implementation subagent with full task text + context]
+[Get Task 1 constraints/criteria + relevant design decisions]
+[Dispatch implementation subagent with task + design decisions + context]
 
 Implementer: "Before I begin - should the hook be installed at user or system level?"
 
@@ -123,8 +124,8 @@ Code reviewer: Strengths: Good test coverage, clean. Issues: None. Approved.
 
 Task 2: Recovery modes
 
-[Get Task 2 text and context (already extracted)]
-[Dispatch implementation subagent with full task text + context]
+[Get Task 2 constraints/criteria + relevant design decisions]
+[Dispatch implementation subagent with task + design decisions + context]
 
 Implementer: [No questions, proceeds]
 Implementer:
@@ -135,8 +136,8 @@ Implementer:
 
 [Dispatch spec compliance reviewer]
 Spec reviewer: ❌ Issues:
-  - Missing: Progress reporting (spec says "report every 100 items")
-  - Extra: Added --json flag (not requested)
+  - Criteria not met: Progress reporting (criterion says "report every 100 items")
+  - Scope exceeded: Added --json flag (not in completion criteria)
 
 [Implementer fixes issues]
 Implementer: Removed --json flag, added progress reporting
@@ -178,9 +179,9 @@ Done!
 - Review checkpoints automatic
 
 **Efficiency gains:**
-- No file reading overhead (controller provides full text)
-- Controller curates exactly what context is needed
-- Subagent gets complete information upfront
+- Controller extracts relevant design decisions for each task (subagent doesn't read entire design.md)
+- Controller provides task constraints + completion criteria + relevant design excerpts
+- Subagent gets targeted information upfront — not raw plan text, but curated work order
 - Questions surfaced before work begins (not after)
 
 **Quality gates:**
@@ -203,7 +204,7 @@ Done!
 - Skip reviews (spec compliance OR code quality)
 - Proceed with unfixed issues
 - Dispatch multiple implementation subagents in parallel (conflicts)
-- Make subagent read plan file (provide full text instead)
+- Make subagent read plan or design.md files (provide extracted task + relevant design decisions instead)
 - Skip scene-setting context (subagent needs to understand where task fits)
 - Ignore subagent questions (answer before letting them proceed)
 - Accept "close enough" on spec compliance (spec reviewer found issues = not done)
